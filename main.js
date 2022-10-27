@@ -185,3 +185,6 @@ clearAll.addEventListener("click", () => {
   localStorage.clear();
   showTodo();
 });
+window.addEventListener("storage", () => {
+  showTodo();
+});
