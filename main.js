@@ -139,6 +139,10 @@ const showTodo = () => {
 };
 const removeTodo = (uin) => {
   let data = JSON.parse(localStorage.getItem("todos"));
+  if (!data) {
+    showTodo();
+    return;
+  }
   let arr = data.filter((element) => {
     return element.id != uin;
   });
