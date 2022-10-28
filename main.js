@@ -151,6 +151,14 @@ const removeTodo = (uin) => {
   }
   showTodo();
 };
+const escapeHtml = (unsafe) => {
+  return unsafe
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+};
 const addTodo = () => {
   let val = input.value;
   if (val != "") {
@@ -161,7 +169,7 @@ const addTodo = () => {
       ...prevtodos,
       {
         id: Math.random().toString(16).slice(2),
-        value: val,
+        value: escapeHtml(val),
         time: new Date().toLocaleString(),
       },
     ];
@@ -174,7 +182,7 @@ todoBtn.addEventListener("click", () => {
   addTodo();
 });
 input.addEventListener("keypress", function (event) {
-  if (event.key === "Enter") {
+  if (event.key == "Enter") {
     event.preventDefault();
     todoBtn.click();
   }
