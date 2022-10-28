@@ -7,8 +7,7 @@ const showTodo = () => {
   if (data) {
     list.innerHTML = data
       .map((element) => {
-        let id = element.id;
-        let value = element.value;
+        let { id, value } = element;
         return `<div class="listelement" uin="${id}">
           <p>${value}</p>
           <button class="listdone" id="listd" uin="${id}">
@@ -40,6 +39,7 @@ const showTodo = () => {
         if (!e.target.closest(".listdone")) {
           let uin = element.getAttribute("uin");
           let myObj = data.find((obj) => obj.id == uin);
+          let { value, time, id } = myObj;
           let modal = document.querySelector(".modal");
           let cont = document.getElementById("cont");
           cont.innerHTML = `<svg
@@ -102,13 +102,13 @@ const showTodo = () => {
           </g>
         </svg>
         <div class="todoshowbig contdiv">
-          <p>${myObj.value}</p>
+          <p>${value}</p>
         </div>
         <div class="datetime contdiv">
-          <p><strong>Time: </strong>${myObj.time}</p>
+          <p><strong>Time: </strong>${time}</p>
         </div>
         <div class="btndelmod contdiv">
-          <button class="mynameisbtn" id="removemodalbtn" uin="${myObj.id}">Remove</button>
+          <button class="mynameisbtn" id="removemodalbtn" uin="${id}">Remove</button>
           <button class="mynameisbtn" id="closemodalbtn" >Close</button>
         </div>`;
           modal.classList.add("showModal");
@@ -116,8 +116,6 @@ const showTodo = () => {
             if (!e.target.closest(".cont")) {
               cont.innerHTML = "";
               modal.classList.remove("showModal");
-            } else {
-              alert("i am gettting angry");
             }
           });
           let btns = document.querySelectorAll(".mynameisbtn");
@@ -154,7 +152,8 @@ const removeTodo = (uin) => {
   showTodo();
 };
 const addTodo = () => {
-  if (input.value != "") {
+  let val = input.value;
+  if (val != "") {
     let prevtodos = localStorage.getItem("todos")
       ? JSON.parse(localStorage.getItem("todos"))
       : [];
@@ -162,7 +161,7 @@ const addTodo = () => {
       ...prevtodos,
       {
         id: Math.random().toString(16).slice(2),
-        value: input.value,
+        value: val,
         time: new Date().toLocaleString(),
       },
     ];
@@ -171,14 +170,14 @@ const addTodo = () => {
     showTodo();
   }
 };
+todoBtn.addEventListener("click", () => {
+  addTodo();
+});
 input.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
     event.preventDefault();
     todoBtn.click();
   }
-});
-todoBtn.addEventListener("click", () => {
-  addTodo();
 });
 showTodo();
 clearAll.addEventListener("click", () => {
