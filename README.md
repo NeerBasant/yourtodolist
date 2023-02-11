@@ -1,3 +1,5 @@
 # yourtodolist
 its a simple yet very useful todo app in vanilla javascript, I just made it for fun
+
+
 Its a very simple Todo App in which you have a input field where you can type your todo and press enter or click the + button just by side to add Todo. And to remove all todos in one click you have a clear all button and to to remove a single one you can hover on it and an amazing animation of sliding remove button with an icon will show up and you click that button and that particular todo will be removed. It is a reponsive mobile friendly todo app with an amazing design and i have made its design using flexbox. and used localstorage for storing the todos. I also has a custom modal for every todo which shows information such as when its is added i mean time date added and has a button for removing the todo plus when user clicks outside the modal the modal closes. and most intresting thing it is a cross browser tab todo app which means when user adds or remove todo on one tab the changes will reflect on all the tabs without refresh.
