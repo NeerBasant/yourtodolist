@@ -160,7 +160,7 @@ const escapeHtml = (unsafe) => {
     .replaceAll("'", "&#039;");
 };
 const addTodo = () => {
-  let val = input.value;
+  let val = input.value.trim();
   if (val != "") {
     let prevtodos = localStorage.getItem("todos")
       ? JSON.parse(localStorage.getItem("todos"))
@@ -174,9 +174,9 @@ const addTodo = () => {
       },
     ];
     localStorage.setItem("todos", JSON.stringify(value));
-    input.value = "";
     showTodo();
   }
+    input.value = "";
 };
 todoBtn.addEventListener("click", () => {
   addTodo();
