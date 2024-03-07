@@ -5,41 +5,89 @@ const clearAll = document.querySelector(".all");
 const showTodo = () => {
   let data = JSON.parse(localStorage.getItem("todos"));
   if (data) {
-    list.innerHTML = data
+    let completed = data.filter((element)=>{
+      return element.status == 1
+    })
+    let Incompleted = data.filter((element)=>{
+      return element.status == 0
+    })
+    let complete_html = '';
+    if(completed.length != 0){
+    complete_html = `<div class="listsection"><div class="collapseheader" id="comp" >Completed<div class="chevron"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>
+  </svg></div></div><div class="listelms">`+completed
       .map((element) => {
-        let { id, value } = element;
+        let { id, value} = element;
         return `<div class="listelement" uin="${id}">
           <p>${value}</p>
-          <button class="listdone" id="listd" uin="${id}">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="#fff"
-              class="bi bi-trash-fill"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
-              />
-            </svg>
+          <div class="listdonebtns">
+          <button class="togglecheck btnss" id="status" uin="${id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(22 91 22)" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </svg></button>
+          <button class="listdone btnss" id="listd" uin="${id}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+        </svg>
           </button>
+          </div>
+        </div>`;
+      
+      })
+      .join("")+"</div></div>";}
+      let Incomplete_html = '';
+      if(Incompleted.length !=0){
+      Incomplete_html = `<div class="listsection"><div class='collapseheader' id="incomp" >Todo<div class="chevron"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>
+    </svg></div></div><div class="listelms">`+Incompleted
+      .map((element) => {
+        let { id, value} = element;
+        return `<div class="listelement" uin="${id}">
+          <p>${value}</p>
+          <div class="listdonebtns">
+          <button class="togglecheck btnss" id="status" uin="${id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16" style="
+      ">
+        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"></path>
+        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"></path>
+      </svg></button>
+          <button class="listdone btnss" id="listd" uin="${id}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+        </svg>
+          </button>
+          </div>
         </div>`;
       })
-      .join("");
-    let listelementbtns = document.querySelectorAll("#listd");
+      .join("")+"</div></div>";}
+      list.innerHTML = `${Incomplete_html} ${complete_html}`;
+
+      let toggles = document.querySelectorAll(".listsection");
+      Array.from(toggles).forEach((element) => {
+        let elem = element.querySelector(".collapseheader")
+        elem.addEventListener("click", () => {
+          element.classList.toggle("collapser")
+        });
+      });
+
+
+    let listelementbtns = document.querySelectorAll(".btnss");
     Array.from(listelementbtns).forEach((element) => {
       element.addEventListener("click", () => {
-        removeTodo(element.getAttribute("uin"));
+        if(element.classList.contains("listdone")){
+          removeTodo(element.getAttribute("uin"));
+        }
+        if(element.classList.contains("togglecheck")){
+          toggleStatus(element.getAttribute("uin"));
+        }
       });
     });
     let listelem = document.querySelectorAll(".listelement");
     Array.from(listelem).forEach((element) => {
       element.addEventListener("click", (e) => {
-        if (!e.target.closest(".listdone")) {
+        if (!e.target.closest(".listdonebtns")) {
           let uin = element.getAttribute("uin");
           let myObj = data.find((obj) => obj.id == uin);
-          let { value, time, id } = myObj;
+          let { value, time, id, last, status } = myObj;
+          let doneornot = status == 0 ? '<p class="donenot">Incomplete</p>' : '<p class="done">Completed</p>'
           let modal = document.querySelector(".modal");
           let cont = document.getElementById("cont");
           cont.innerHTML = `<svg
@@ -101,11 +149,14 @@ const showTodo = () => {
             </g>
           </g>
         </svg>
+        ${doneornot}
         <div class="todoshowbig contdiv">
           <p>${value}</p>
         </div>
         <div class="datetime contdiv">
           <p><strong>Time: </strong>${time}</p>
+          <p><strong>Last Modified: </strong>${last}</p>
+
         </div>
         <div class="btndelmod contdiv">
           <button class="mynameisbtn" id="removemodalbtn" uin="${id}">Remove</button>
@@ -161,6 +212,7 @@ const escapeHtml = (unsafe) => {
 };
 const addTodo = () => {
   let val = input.value.trim();
+  let timet = new Date().toLocaleString();
   if (val != "") {
     let prevtodos = localStorage.getItem("todos")
       ? JSON.parse(localStorage.getItem("todos"))
@@ -170,7 +222,9 @@ const addTodo = () => {
       {
         id: Math.random().toString(16).slice(2),
         value: escapeHtml(val),
-        time: new Date().toLocaleString(),
+        time: timet,
+        status: 0,
+        last: timet
       },
     ];
     localStorage.setItem("todos", JSON.stringify(value));
@@ -187,10 +241,27 @@ input.addEventListener("keypress", function (event) {
     todoBtn.click();
   }
 });
+const toggleStatus = (uin)=>{
+  let data = JSON.parse(localStorage.getItem("todos"));
+  if (!data) {
+    showTodo();
+    return;
+  }
+  let arr = data.filter((element) => {
+    if(element.id == uin){
+      element.status == 0 ? element.status = 1 : element.status = 0
+      element.last = new Date().toLocaleString();
+    }
+    return element;
+  });
+  localStorage.setItem("todos", JSON.stringify(arr));
+  showTodo();
+}
 showTodo();
 clearAll.addEventListener("click", () => {
-  localStorage.clear();
-  showTodo();
+  if(confirm("It will delete all the pending and completed Todos, Are you sure you wants to delete everything") == true){localStorage.clear();
+    showTodo();
+  }
 });
 window.addEventListener("storage", () => {
   showTodo();
