@@ -21,7 +21,7 @@ const showTodo = () => {
         return `<div class="listelement" uin="${id}">
           <p>${value}</p>
           <div class="listdonebtns">
-          <button class="togglecheck btnss" id="status" uin="${id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(22 91 22)" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+          <button class="togglecheck btnss" id="status" uin="${id}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="success-svg-check bi bi-check-circle-fill" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
         </svg></button>
           <button class="listdone btnss" id="listd" uin="${id}">
@@ -265,4 +265,25 @@ clearAll.addEventListener("click", () => {
 });
 window.addEventListener("storage", () => {
   showTodo();
+});
+
+// for dark mode 
+const dark = document.querySelector('.dark');
+
+dark.addEventListener('click',()=>{
+  document.body.classList.toggle('darkmode')
+})
+
+// for using device default theme
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.body.classList.add('darkmode')
+}
+// reacting to changes in device theme
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+  const newColorScheme = event.matches ? "dark" : "light";
+  if(newColorScheme == 'light'){
+    document.body.classList.remove('darkmode')
+  }else{
+    document.body.classList.add('darkmode')
+  }
 });
