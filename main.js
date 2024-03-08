@@ -302,8 +302,12 @@ Array.from(themebtns).forEach((element)=>{
     themechanger()
   })
 })
-
-themechanger();
+  if(!localStorage.getItem('theme')){
+     localStorage.setItem('theme','device')
+    themechanger()
+  }else{
+    themechanger()
+  }
 // reacting to changes in device theme if theme is device default
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
   const newColorScheme = event.matches ? "dark" : "light";
