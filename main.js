@@ -163,10 +163,13 @@ const showTodo = () => {
           <button class="mynameisbtn" id="closemodalbtn" >Close</button>
         </div>`;
           modal.classList.add("showModal");
+          document.body.classList.add("hidden");
           modal.addEventListener("click", (e) => {
             if (!e.target.closest(".cont")) {
               cont.innerHTML = "";
               modal.classList.remove("showModal");
+          document.body.classList.remove("hidden")
+
             }
           });
           let btns = document.querySelectorAll(".mynameisbtn");
@@ -176,7 +179,8 @@ const showTodo = () => {
                 removeTodo(element.getAttribute("uin"));
               }
               cont.innerHTML = "";
-              modal.classList.remove("showModal");
+          document.body.classList.remove("hidden")
+          modal.classList.remove("showModal");
             });
           });
         }
@@ -196,7 +200,7 @@ const removeTodo = (uin) => {
     return element.id != uin;
   });
   if (arr.length == 0) {
-    localStorage.clear();
+    localStorage.removeItem('todos');
   } else {
     localStorage.setItem("todos", JSON.stringify(arr));
   }
@@ -259,31 +263,53 @@ const toggleStatus = (uin)=>{
 }
 showTodo();
 clearAll.addEventListener("click", () => {
-  if(confirm("It will delete all the pending and completed Todos, Are you sure you wants to delete everything") == true){localStorage.clear();
+  if(confirm("It will delete all the pending and completed Todos, Are you sure you wants to delete everything") == true){localStorage.removeItem('todos');
     showTodo();
   }
-});
-window.addEventListener("storage", () => {
-  showTodo();
 });
 
 // for dark mode 
 const dark = document.querySelector('.dark');
-
+const themecont = document.querySelector('.themecont')
+const themebtns = document.querySelectorAll('.thememodalbtns')
+const themechanger = ()=>{
+  let theme = localStorage.getItem('theme');
+  if(theme == "dark"){
+    document.body.classList.add('darkmode')
+  }else if(theme == "light"){
+    document.body.classList.remove('darkmode')
+  }else if(theme == 'device'){
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('darkmode')
+    }else{
+      document.body.classList.remove('darkmode')
+    }
+  }
+}
 dark.addEventListener('click',()=>{
-  document.body.classList.toggle('darkmode')
+    themecont.classList.toggle('showcont')
+})
+window.onclick = (e)=>{
+    if(!e.target.closest(".showcont") && !e.target.closest(".dark")){
+      themecont.classList.remove('showcont')
+    }
+}
+Array.from(themebtns).forEach((element)=>{
+  element.addEventListener('click',()=>{
+    let id = element.getAttribute('id');
+    localStorage.setItem('theme',id)
+    themecont.classList.remove('showcont')
+    themechanger()
+  })
 })
 
-// for using device default theme
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.body.classList.add('darkmode')
-}
-// reacting to changes in device theme
+themechanger();
+// reacting to changes in device theme if theme is device default
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
   const newColorScheme = event.matches ? "dark" : "light";
-  if(newColorScheme == 'light'){
+  if(localStorage.getItem('theme') == 'device'){if(newColorScheme == 'light'){
     document.body.classList.remove('darkmode')
   }else{
     document.body.classList.add('darkmode')
-  }
+  }}
 });
