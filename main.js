@@ -1,6 +1,8 @@
 const input = document.getElementById("inp");
 const todoBtn = document.getElementById("todobutton");
 const list = document.querySelector(".list");
+const modal = document.querySelector(".modal");
+const cont = document.getElementById("cont");
 const clearAll = document.querySelector(".all");
 const showTodo = () => {
   let data = JSON.parse(localStorage.getItem("todos"));
@@ -88,8 +90,6 @@ const showTodo = () => {
           let myObj = data.find((obj) => obj.id == uin);
           let { value, time, id, last, status } = myObj;
           let doneornot = status == 0 ? '<p class="donenot">Incomplete</p>' : '<p class="done">Completed</p>'
-          let modal = document.querySelector(".modal");
-          let cont = document.getElementById("cont");
           cont.innerHTML = `<svg
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
@@ -164,14 +164,6 @@ const showTodo = () => {
         </div>`;
           modal.classList.add("showModal");
           document.body.classList.add("hidden");
-          modal.addEventListener("click", (e) => {
-            if (!e.target.closest(".cont")) {
-              cont.innerHTML = "";
-              modal.classList.remove("showModal");
-          document.body.classList.remove("hidden")
-
-            }
-          });
           let btns = document.querySelectorAll(".mynameisbtn");
           Array.from(btns).forEach((element) => {
             element.addEventListener("click", () => {
@@ -219,7 +211,7 @@ const addTodo = () => {
   let timet = new Date().toLocaleString();
   if (val != "") {
     let prevtodos = localStorage.getItem("todos")
-      ? JSON.parse(localStorage.getItem("todos"))
+    ? JSON.parse(localStorage.getItem("todos"))
       : [];
     let value = [
       ...prevtodos,
@@ -267,7 +259,14 @@ clearAll.addEventListener("click", () => {
     showTodo();
   }
 });
-
+// for closing modal when clicked outside of container
+modal.addEventListener("click", (e) => {
+  if (!e.target.closest(".cont")) {
+    cont.innerHTML = "";
+    modal.classList.remove("showModal");
+    document.body.classList.remove("hidden")
+  }
+});
 // for dark mode 
 const dark = document.querySelector('.dark');
 const themecont = document.querySelector('.themecont')
@@ -289,11 +288,12 @@ const themechanger = ()=>{
 dark.addEventListener('click',()=>{
     themecont.classList.toggle('showcont')
 })
-window.onclick = (e)=>{
+// for closing theme modal when clicked outside
+window.addEventListener('click',(e)=>{
     if(!e.target.closest(".showcont") && !e.target.closest(".dark")){
       themecont.classList.remove('showcont')
     }
-}
+})
 Array.from(themebtns).forEach((element)=>{
   element.addEventListener('click',()=>{
     let id = element.getAttribute('id');
@@ -302,12 +302,13 @@ Array.from(themebtns).forEach((element)=>{
     themechanger()
   })
 })
-  if(!localStorage.getItem('theme')){
-     localStorage.setItem('theme','device')
-    themechanger()
-  }else{
-    themechanger()
-  }
+
+if(!localStorage.getItem('theme')){
+  localStorage.setItem('theme','device')
+ themechanger()
+}else{
+ themechanger()
+}
 // reacting to changes in device theme if theme is device default
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
   const newColorScheme = event.matches ? "dark" : "light";
